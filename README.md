@@ -8,14 +8,12 @@
 3. gcp - how to run it in gcp's cloud run, based on [Rody Davis's](https://rodydavis.com/posts/pocketbase-cloudrun) version
 
 
-### Local Branch
-- Can just be run directly, can also be regenerated
-- To regenerate: ```$ ./generate.sh```
-- To run: ```$ ./pocketfhir serve```
+### Local Run
+- Generate: ```$ ./generate_local.sh``` - this will also start the server the first time
+- After that, you can just do: ```$ ./pocketfhir serve```
 
 ### Local-Docker Branch
-- Regenerate: ```$ ./build/generate.sh```
-- You can still run locally as above: ```$ ./pocketfhir serve```
+- Regenerate: ```$ ./build/generate.sh``` - can still be run as the executable
 - Generating will create two directories pb_data/ and pb_migrations/, which normally stay in the primary directory, but for this case, we copy them into the data/ directory
 - You should then be able to run: ```$ docker-compose up --build```
 - This will create a client, and while the command line says that it is serving at: 

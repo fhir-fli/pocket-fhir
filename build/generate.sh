@@ -24,14 +24,19 @@ PB_PID=$!
 # Wait for the pb_migrations and pb_data directories to be generated
 while [ ! -d "./pb_migrations" ] || [ ! -d "./pb_data" ]; do
   echo "Waiting for pb_migrations and pb_data directories to be generated..."
-  sleep 5
+  sleep 2
 done
 
 # Stop the PocketBase server
 kill $PB_PID
 
+sleep 1
+
 # Copy the generated directories to the data directory
 cp -r ./pb_migrations ./data/pb_migrations
 cp -r ./pb_data ./data/pb_data
+
+rm -r ./pb_migrations
+rm -r ./pb_data
 
 echo "PocketFHIR build completed successfully."

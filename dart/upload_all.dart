@@ -3,8 +3,19 @@ import 'dart:io';
 import 'package:fhir_r5/fhir_r5.dart';
 import 'package:pocketbase/pocketbase.dart';
 
+class HttpOverridesImpl extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 Future<void> main() async {
-  final PocketBase pb = PocketBase('https://pocket-fhir.fly.dev');
+  HttpOverrides.global = HttpOverridesImpl();
+
+  final PocketBase pb = PocketBase('https://localhost');
 
   // Authenticate
   await pb.admins.authWithPassword('grey@fhirfli.dev', '');

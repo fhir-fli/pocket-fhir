@@ -13,3 +13,5 @@
 - To run: ./pocketfhir serve
 
 ### Local-Docker Branch
+- Can still be run locally, or regenerated as above, except to generate it's: $ ./build/generate.sh
+- You should generate first, which will create

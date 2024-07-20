@@ -13,7 +13,7 @@ import (
 	"github.com/pocketbase/pocketbase/tools/types"
 )
 
-func initializePredefinedCollections(app *pocketbase.PocketBase) error {
+func initializeCollections(app *pocketbase.PocketBase) error {
 	// Create initial collections on BeforeServe event
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		return createInitialCollections(app)

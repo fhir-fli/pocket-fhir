@@ -1,11 +1,11 @@
 module pocketfhir
 
-go 1.21
+go 1.22.4
 
 require (
 	github.com/google/fhir/go v0.7.4
 	github.com/labstack/echo/v5 v5.0.0-20230722203903-ec5b858dab61
-	github.com/pocketbase/pocketbase v0.22.15
+	github.com/pocketbase/pocketbase v0.22.17
 	google.golang.org/protobuf v1.34.2
 )
 

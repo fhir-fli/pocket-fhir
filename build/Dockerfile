@@ -1,5 +1,5 @@
 # Use a multi-stage build to compile PocketBase and set up Caddy
-FROM golang:1.21-alpine AS builder
+FROM golang:1.22.4-alpine AS builder
 
 # Set the working directory
 WORKDIR /app
@@ -35,6 +35,7 @@ RUN chmod +x /app/entrypoint.sh
 
 # Expose the necessary port for Cloud Run
 EXPOSE 8080
+EXPOSE 443
 
 # Command to run the entrypoint script
 ENTRYPOINT ["/app/entrypoint.sh"]

@@ -5,14 +5,16 @@ services:
     build:
       context: .
       dockerfile: ./build/Dockerfile
+      args:
+        CADDYFILE: Caddyfile.local # For local development
     container_name: pocketfhir-caddy
     ports:
       - "443:443" # Expose the HTTPS port
     env_file:
-      - ./config/.env
+      - ./config/.env.local
     volumes:
       - ./data/pb_data:/app/pb_data
       - ./data/pb_migrations:/app/pb_migrations
-      - ./config/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./config/caddy/Caddyfile.local:/etc/caddy/Caddyfile
       - ./build/selfsigned.crt:/etc/caddy/selfsigned.crt
       - ./build/selfsigned.key:/etc/caddy/selfsigned.key

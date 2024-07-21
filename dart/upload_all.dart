@@ -18,7 +18,7 @@ Future<void> main() async {
   final PocketBase pb = PocketBase('https://localhost');
 
   // Authenticate
-  await pb.admins.authWithPassword('grey@fhirfli.dev', '');
+  await pb.admins.authWithPassword('grey@fhirfli.dev', '01 password');
 
   await assets(pb);
 }

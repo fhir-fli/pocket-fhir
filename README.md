@@ -2,12 +2,6 @@
 
 ## All of this is based on the fabulous [PocketBase](https://pocketbase.io/), but designed for FHIR®
 
-## Branches
-1. local - this is a branch that just contains the src files and the executable.
-2. local-docker - essentially just the same as local except that it runs in docker.
-3. gcp - how to run it in gcp's cloud run, based on [Rody Davis's](https://rodydavis.com/posts/pocketbase-cloudrun) version
-
-
 ### Local Run
 - Generate: ```$ ./generate_local.sh``` - this will also start the server the first time
 - After that, you can just do: ```$ ./pocketfhir serve```
@@ -28,6 +22,7 @@ pocketfhir-caddy | └─ Admin UI: http://0.0.0.0:8090/_/
 - when you're done, use ```$ docker-compose down```
 
 ### GCP
+- Based on [Rody Davis's](https://rodydavis.com/posts/pocketbase-cloudrun) version
 - Go to GCP, make sure you have Cloud Storage
 - Create a new bucket
 - Give it a name, click continue
@@ -36,3 +31,37 @@ pocketfhir-caddy | └─ Admin UI: http://0.0.0.0:8090/_/
 - Control Access - whatever the default is, continue
 - Data Protection - default
 - Create
+- run the generate script ```$ ./build/generate.sh```
+- Copy the 2 folders (pb_data/ and pb_migrations/) to the storage bucket (you can just drag and drop)
+- Complete the gcloud.sh file with appropriate values
+- Run ```$ ./gcloud.sh``` - this should build and upload your docker container with Caddy to cloud run
+- Go back into cloud run and select the new service
+- Click Edit & Deploy New Revision
+- Click Volume Tab
+- Add Volume
+- Volume Type -> Cloud Storage Bucket
+- Volume name -> remote-storage (or whatever you want)
+- Bucket -> the bucket you created that contains your folders
+- Ensure you DO NOT check Read-only
+- Click Container(s) Tab
+- Partway down select Volume Mounts
+- Name1 -> remote-storage (matches above)
+- Mount path 1 -> /cloud/storage
+- +Add Health Check
+- Select health check type -> Liveness check
+- Select probe type -> HTTP
+- Path -> /api/health
+- Initial delay -> 10
+- Period -> 240
+- Failure threshold -> 2
+- Timeout -> 240
+- Submit
+- 
+```
+$ gcloud iam service-accounts create pocket-fhir-client --display-name="PocketFHIR Client"
+
+$ gcloud run services add-iam-policy-binding pocket-fhir \
+    --member="serviceAccount:pocket-fhir-client@<PROJECT_ID>.iam.gserviceaccount.com" \
+    --role="roles/run.invoker" \
+    --region=us-central1
+```

@@ -1,0 +1,16 @@
+{
+    email grey@fhirfli.dev
+    local_certs
+    {$AUTO_HTTPS}
+}
+
+:443 {
+    tls /etc/caddy/selfsigned.crt /etc/caddy/selfsigned.key
+    reverse_proxy 127.0.0.1:8090
+    log {
+        output file /var/log/caddy/access.log
+        format json
+    }
+    encode gzip
+    file_server
+}
